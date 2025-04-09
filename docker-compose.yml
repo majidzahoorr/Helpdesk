@@ -1,0 +1,35 @@
+version: '3'
+services:
+  db:
+    image: postgres:14
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+    ports:
+      - "5430:5430"
+
+  web:
+    build: .
+#    command: ./script.sh python manage.py runserver 0.0.0.0:8001
+    command: bash -c "./script.sh && python manage.py migrate && python manage.py runserver 0.0.0.0:8002"
+
+    volumes:
+      - .:/app
+    ports:
+      - "8002:8002"
+    depends_on:
+      - db
+    environment:
+      DEBUG: TRUE
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+
+volumes:
+  postgres_data:
