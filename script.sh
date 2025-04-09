@@ -1,6 +1,7 @@
 #!/bin/bash
 # script.sh
 
+
 # Wait for Postgres to be ready
 while ! nc -z "$POSTGRES_HOST" "$POSTGRES_PORT"; do
   echo "Waiting for PostgreSQL at $POSTGRES_HOST:$POSTGRES_PORT..."
@@ -14,7 +15,10 @@ python manage.py migrate
 # Make migrations if needed
 echo "Making migrations..."
 python manage.py makemigrations
+python manage.py tailwind init
+export TAILWIND_APP_NAME=theme  # <--- set your custom app name her
 
+python manage.py tailwind install
 # Create default superuser
 echo "Creating default superuser..."
 python manage.py shell <<EOF

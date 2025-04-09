@@ -34,7 +34,7 @@ WORKDIR /app/backend
 
 # Expose port
 
-EXPOSE 8001
+EXPOSE 8002
 
 # Command to run the application
 CMD ["./script.sh", "DB_HOST", "python", "manage.py", "runserver", "0.0.0.0:8002"]
